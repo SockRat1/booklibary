@@ -2,6 +2,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addBook } from "../redux/books/actionCreators";
+import { v4 } from "uuid";
 
 function BookForm() {
   const [title, setTitle] = useState("");
@@ -11,8 +12,9 @@ function BookForm() {
   function addHandler() {
     if (title && author) {
       const book = {
-        title: title,
-        author: author,
+        title,
+        author,
+        id: v4(),
       };
       dispatch(addBook(book));
       setTitle("");
