@@ -1,8 +1,9 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addBook } from "../redux/books/actionCreators";
+import { addBook } from "../redux/slices/booksSlice";
 import { v4 } from "uuid";
+import fetchbook from "../utils/fetchbook";
 
 function BookForm() {
   const [title, setTitle] = useState("");
@@ -12,21 +13,21 @@ function BookForm() {
   function addHandler() {
     if (title && author) {
       const book = {
+        id: v4(),
         title,
         author,
-        id: v4(),
+        isFavorite: false,
       };
       dispatch(addBook(book));
       setTitle("");
       setAuthor("");
     }
   }
-
   return (
     <>
       <Box
         sx={{
-          width: "30rem",
+          width: { xs: "100%", md: "30rem" },
           display: "flex",
           flexDirection: "column",
           textAlign: "center",
@@ -55,7 +56,15 @@ function BookForm() {
           <Button variant="contained" fullWidth onClick={addHandler}>
             Add Book
           </Button>
-          <Button variant="contained">Add random via API</Button>
+          <Button
+            variant="contained"
+            onClick={async () => {
+              const book = await fetchbook();
+              dispatch(addBook(book));
+            }}
+          >
+            Add random via API
+          </Button>
         </Box>
       </Box>
     </>

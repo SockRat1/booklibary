@@ -6,8 +6,19 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetFilters,
+  setOnlyFavorite,
+  setSearchByAuthor,
+  setSearchByTitle,
+} from "../redux/slices/filterSlice";
 
 function BookSearch() {
+  const dispatch = useDispatch();
+  const searchbyauthor = useSelector((state) => state.filter.searchbyauthor);
+  const searchbytitle = useSelector((state) => state.filter.searchbytitle);
+  const onlyfavorite = useSelector((state) => state.filter.onlyfavorite);
   const textsize = { width: { xs: "80%", md: "25%" } };
   return (
     <Box
@@ -17,7 +28,7 @@ function BookSearch() {
         justifyContent: "center",
         gap: "2rem",
         height: "fit-content",
-        width: { sx: "30rem", md: "60rem" },
+        width: { xs: "100%", md: "60rem" },
         p: "1rem",
         flexDirection: { xs: "column", md: "row" },
         border: "0.1rem solid",
@@ -25,10 +36,32 @@ function BookSearch() {
         borderRadius: "0.5rem",
       }}
     >
-      <TextField variant="standard" label="Filter by author" sx={textsize} />
-      <TextField variant="standard" label="Filter by title" sx={textsize} />
-      <FormControlLabel control={<Checkbox />} label="Only favourite" />
-      <Button variant="contained">Reset filters</Button>
+      <TextField
+        variant="standard"
+        label="Filter by author"
+        sx={textsize}
+        value={searchbyauthor}
+        onChange={(e) => dispatch(setSearchByAuthor(e.target.value))}
+      />
+      <TextField
+        variant="standard"
+        label="Filter by title"
+        sx={textsize}
+        value={searchbytitle}
+        onChange={(e) => dispatch(setSearchByTitle(e.target.value))}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={onlyfavorite}
+            onChange={(e) => dispatch(setOnlyFavorite(e.target.checked))}
+          />
+        }
+        label="Only favourite"
+      />
+      <Button variant="contained" onClick={() => dispatch(resetFilters())}>
+        Reset filters
+      </Button>
     </Box>
   );
 }

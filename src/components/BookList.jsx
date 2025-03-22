@@ -13,26 +13,43 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteBook, toggleFavorite } from "../redux/books/actionCreators";
+import { deleteBook, toggleFavorite } from "../redux/slices/booksSlice";
 
 function BookList() {
-  const [fav, setFav] = useState(false);
   const books = useSelector((state) => state.books);
   const dispatch = useDispatch();
+  const searchbyauthor = useSelector((state) => state.filter.searchbyauthor);
+  const searchbytitle = useSelector((state) => state.filter.searchbytitle);
+  const onlyfavorite = useSelector((state) => state.filter.onlyfavorite);
+  let searchedbooks = [...books];
+
+  if (searchbyauthor) {
+    searchedbooks = searchedbooks.filter((book) =>
+      book.author.toLowerCase().includes(searchbyauthor.toLowerCase())
+    );
+  }
+
+  if (searchbytitle) {
+    searchedbooks = searchedbooks.filter((book) =>
+      book.title.toLowerCase().includes(searchbytitle.toLowerCase())
+    );
+  }
+  if (onlyfavorite) {
+    searchedbooks = searchedbooks.filter((book) => book.isFavorite);
+  }
+
   function handlerDelete(id) {
     dispatch(deleteBook(id));
   }
   function handleFavorite(e, id) {
     dispatch(toggleFavorite(id));
-    setFav(e.target.checked);
   }
   return (
     <Box
       sx={{
         py: "2rem",
-        width: { sx: "30rem", md: "60rem" },
+        width: { xs: "100%", md: "60rem" },
         height: "25rem",
         textAlign: "center",
         border: "0.1rem solid",
@@ -49,7 +66,7 @@ function BookList() {
           overflowY: "auto",
         }}
       >
-        {books.map((val, index) => {
+        {searchedbooks.map((val, index) => {
           return (
             <ListItem
               key={val.id}
@@ -64,7 +81,7 @@ function BookList() {
               <Checkbox
                 icon={<BookmarkBorder />}
                 checkedIcon={<Bookmark />}
-                checked={fav}
+                checked={val.isFavorite}
                 onChange={(e) => handleFavorite(e, val.id)}
               />
               <IconButton
