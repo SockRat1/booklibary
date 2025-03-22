@@ -38,7 +38,7 @@ function BookForm() {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h3 ">Add a new book</Typography>
+        <Typography variant="h3">Add a new book</Typography>
         <TextField
           variant="standard"
           label="Title"
@@ -52,14 +52,9 @@ function BookForm() {
           onChange={(e) => setAuthor(e.target.value)}
         />
         <Box display="flex" flexDirection="column" gap="1rem" width="100%">
-          <Box display="flex" gap="1rem" width="100%">
-            <Button variant="contained" fullWidth onClick={addHandler}>
-              Add Book
-            </Button>
-            <Button variant="contained" fullWidth>
-              Add random
-            </Button>
-          </Box>
+          <Button variant="contained" fullWidth onClick={addHandler}>
+            Add Book
+          </Button>
           <Button variant="contained">Add random via API</Button>
         </Box>
       </Box>

@@ -21,8 +21,9 @@ function App() {
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", md: "row" },
             gap: "2rem",
-            alignItems: "stretch",
+            alignItems: "stretch  ",
           }}
         >
           <BookForm />
