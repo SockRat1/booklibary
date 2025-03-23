@@ -56,13 +56,7 @@ function BookForm() {
           <Button variant="contained" fullWidth onClick={addHandler}>
             Add Book
           </Button>
-          <Button
-            variant="contained"
-            onClick={async () => {
-              const book = await fetchbook();
-              dispatch(addBook(book));
-            }}
-          >
+          <Button variant="contained" onClick={() => dispatch(fetchbook)}>
             Add random via API
           </Button>
         </Box>

@@ -7,15 +7,18 @@ import BookForm from "./components/BookForm";
 import BookSearch from "./components/BookSearch";
 import BookList from "./components/BookList";
 import { Box, Stack } from "@mui/material";
+import ErrorNotify from "./components/ErrorNotify";
 function App() {
   return (
     <>
+      <ErrorNotify />
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           minHeight: "100vh",
+          width: "100%",
         }}
       >
         <Box
@@ -24,6 +27,8 @@ function App() {
             flexDirection: { xs: "column", md: "row" },
             gap: "2rem",
             alignItems: "stretch  ",
+            justifyContent: "center",
+            width: "100%",
           }}
         >
           <BookForm />

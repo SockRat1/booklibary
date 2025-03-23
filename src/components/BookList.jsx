@@ -49,7 +49,7 @@ function BookList() {
     <Box
       sx={{
         py: "2rem",
-        width: { xs: "100%", md: "60rem" },
+        minWidth: { xs: "100%", md: "60rem" },
         height: "25rem",
         textAlign: "center",
         border: "0.1rem solid",
@@ -67,31 +67,35 @@ function BookList() {
         }}
       >
         {searchedbooks.map((val, index) => {
-          return (
-            <ListItem
-              key={val.id}
-              sx={{
-                backgroundColor: index % 2 != 0 ? "grey.100" : null,
-                borderBottom: "0.1rem solid",
-                borderBottomColor: "grey.500",
-                px: 2,
-              }}
-            >
-              <ListItemText primary={val.title} secondary={val.author} />
-              <Checkbox
-                icon={<BookmarkBorder />}
-                checkedIcon={<Bookmark />}
-                checked={val.isFavorite}
-                onChange={(e) => handleFavorite(e, val.id)}
-              />
-              <IconButton
-                sx={{ ml: "auto" }}
-                onClick={() => handlerDelete(val.id)}
+          if (val) {
+            return (
+              <ListItem
+                key={val.id}
+                sx={{
+                  width: "100%",
+                  backgroundColor: index % 2 != 0 ? "grey.100" : null,
+                  borderBottom: "0.1rem solid",
+                  borderBottomColor: "grey.500",
+                  px: 2,
+                }}
               >
-                <Delete />
-              </IconButton>
-            </ListItem>
-          );
+                <ListItemText primary={val.title} secondary={val.author} />
+                <Checkbox
+                  icon={<BookmarkBorder />}
+                  checkedIcon={<Bookmark />}
+                  checked={val.isFavorite}
+                  onChange={(e) => handleFavorite(e, val.id)}
+                />
+                <IconButton
+                  sx={{ ml: "auto" }}
+                  onClick={() => handlerDelete(val.id)}
+                >
+                  <Delete />
+                </IconButton>
+              </ListItem>
+            );
+          }
+          return;
         })}
       </List>
     </Box>
