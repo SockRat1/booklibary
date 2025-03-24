@@ -1,22 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchBook } from "./booksSlice";
 
-const initialState = {
-  text: "Some error",
-  isOpen: false,
-};
+const initialState = "";
 
 const errorSlice = createSlice({
   name: "error",
   initialState,
   reducers: {
-    setText: (state, action) => {
-      state.text = action.payload;
+    setError: (_, action) => {
+      return action.payload;
     },
-    toggleOpen: (state) => {
-      state.isOpen = !state.isOpen;
+    resetError: () => {
+      return "";
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchBook.rejected, (_, action) => {
+      return action.payload;
+    });
   },
 });
 
-export const { setText, toggleOpen } = errorSlice.actions;
+export const { setError, resetError } = errorSlice.actions;
 export default errorSlice.reducer;

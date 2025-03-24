@@ -1,22 +1,21 @@
 import { IconButton, Snackbar, SnackbarContent } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleOpen } from "../redux/slices/errorSlice";
+import { resetError } from "../redux/slices/errorSlice";
 import { Close } from "@mui/icons-material";
 
 function ErrorNotify() {
-  const open = useSelector((state) => state.error.isOpen);
-  const text = useSelector((state) => state.error.text);
+  const text = useSelector((state) => state.error);
   const dispatch = useDispatch();
 
   function handleClose(e, reason) {
     if (reason === "clickaway") return;
 
-    dispatch(toggleOpen());
+    dispatch(resetError());
   }
   const action = (
     <>
-      <IconButton onClick={() => dispatch(toggleOpen())}>
+      <IconButton onClick={() => dispatch(resetError())}>
         <Close sx={{ color: "white" }} />
       </IconButton>
     </>
@@ -25,7 +24,7 @@ function ErrorNotify() {
     <>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
+        open={text}
         autoHideDuration={4000}
         onClose={handleClose}
       >
