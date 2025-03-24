@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchBook } from "./booksSlice";
 
-const initialState = "";
+const initialState: string = "";
 
 const errorSlice = createSlice({
   name: "error",
@@ -16,7 +16,7 @@ const errorSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBook.rejected, (_, action) => {
-      return action.payload;
+      return (action.payload as string) || "Unknown error";
     });
   },
 });

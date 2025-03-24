@@ -1,25 +1,15 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-} from "@mui/material";
-import React from "react";
+import { Box, Button, Checkbox, FormControlLabel, SxProps, TextField } from "@mui/material";
+import React, { ChangeEvent, CSSProperties } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  resetFilters,
-  setOnlyFavorite,
-  setSearchByAuthor,
-  setSearchByTitle,
-} from "../redux/slices/filterSlice";
+import { resetFilters, setOnlyFavorite, setSearchByAuthor, setSearchByTitle } from "../redux/slices/filterSlice";
+import { AppDispatch, RootState } from "../redux/store";
 
 function BookSearch() {
-  const dispatch = useDispatch();
-  const searchbyauthor = useSelector((state) => state.filter.searchbyauthor);
-  const searchbytitle = useSelector((state) => state.filter.searchbytitle);
-  const onlyfavorite = useSelector((state) => state.filter.onlyfavorite);
-  const textsize = { width: { xs: "80%", md: "25%" } };
+  const dispatch: AppDispatch = useDispatch();
+  const searchbyauthor = useSelector((state: RootState) => state.filter.searchbyauthor);
+  const searchbytitle = useSelector((state: RootState) => state.filter.searchbytitle);
+  const onlyfavorite = useSelector((state: RootState) => state.filter.onlyfavorite);
+  const textsize: SxProps = { width: { xs: "80%", md: "25%" } };
   return (
     <Box
       sx={{
@@ -51,12 +41,7 @@ function BookSearch() {
         onChange={(e) => dispatch(setSearchByTitle(e.target.value))}
       />
       <FormControlLabel
-        control={
-          <Checkbox
-            checked={onlyfavorite}
-            onChange={(e) => dispatch(setOnlyFavorite(e.target.checked))}
-          />
-        }
+        control={<Checkbox checked={onlyfavorite} onChange={(e: ChangeEvent<HTMLInputElement>) => dispatch(setOnlyFavorite(e.target.checked))} />}
         label="Only favourite"
       />
       <Button variant="contained" onClick={() => dispatch(resetFilters())}>

@@ -1,29 +1,31 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addBook, fetchBook } from "../redux/slices/booksSlice";
+import { addBook, fetchBook, TypeBook } from "../redux/slices/booksSlice";
 import { v4 } from "uuid";
 import { setError } from "../redux/slices/errorSlice";
+import { AppDispatch, RootState } from "../redux/store";
 function BookForm() {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const loading = useSelector((state) => state.books.isLoading);
-  const dispatch = useDispatch();
+  const [title, setTitle] = useState<string>("");
+  const [author, setAuthor] = useState<string>("");
+  const loading = useSelector((state: RootState) => state.books.isLoading);
+  const dispatch: AppDispatch = useDispatch();
 
   function addHandler() {
-    if (title && author) {
-      const book = {
-        id: v4(),
-        title,
-        author,
-        isFavorite: false,
-      };
-      dispatch(addBook(book));
-      setTitle("");
-      setAuthor("");
-    } else {
+    if (!title || !author) {
       dispatch(setError("Enter the names of the authors and the title of the book"));
+      return;
     }
+
+    const book: TypeBook = {
+      id: v4(),
+      title,
+      author,
+      isFavorite: false,
+    };
+    dispatch(addBook(book));
+    setTitle("");
+    setAuthor("");
   }
   return (
     <>

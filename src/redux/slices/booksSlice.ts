@@ -1,14 +1,25 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { v4 } from "uuid";
 import { getRandomInt, getRandomLetter } from "../../utils/bookUtils";
 
-const initialState = {
+type TypeBook = {
+  id: string;
+  title: string;
+  author: string;
+  isFavorite: boolean;
+};
+type state = {
+  books: TypeBook[];
+  isLoading: boolean;
+};
+
+const initialState: state = {
   books: [],
   isLoading: false,
 };
 
-export const fetchBook = createAsyncThunk("books/fetchBook", async (_, { rejectWithValue }) => {
+export const fetchBook = createAsyncThunk<TypeBook, void>("books/fetchBook", async (_, { rejectWithValue }) => {
   try {
     const query = getRandomLetter();
     const url = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=AIzaSyDJjChH0fxkFnoJIn67qw1dypLzB-fPTbA`;
@@ -19,11 +30,11 @@ export const fetchBook = createAsyncThunk("books/fetchBook", async (_, { rejectW
     }
 
     const books = res.data.items;
-    const randomBook = books[getRandomInt(0, books.length - 1)];
-    const { title = "Unknown title", authors } = randomBook.volumeInfo;
     if (!books?.length) {
       return rejectWithValue("Books not found");
     }
+    const randomBook = books[getRandomInt(0, books.length - 1)];
+    const { title = "Unknown title", authors } = randomBook.volumeInfo;
 
     return {
       id: v4(),
@@ -32,7 +43,10 @@ export const fetchBook = createAsyncThunk("books/fetchBook", async (_, { rejectW
       isFavorite: false,
     };
   } catch (error) {
-    return rejectWithValue(`Error: ${error.message || "Unexpected error"}`);
+    if (error instanceof Error) {
+      return rejectWithValue(`Error: ${error.message || "Unexpected error"}`);
+    }
+    return rejectWithValue("Unknown error");
   }
 });
 
@@ -47,7 +61,7 @@ const booksSlice = createSlice({
       const books = state.books.filter((book) => book.id !== action.payload);
       return { ...state, books };
     },
-    toggleFavorite: (state, action) => {
+    toggleFavorite: (state, action: PayloadAction<string>) => {
       const books = state.books.map((book) => (book.id === action.payload ? { ...book, isFavorite: !book.isFavorite } : book));
       return { ...state, books };
     },
@@ -64,5 +78,5 @@ const booksSlice = createSlice({
 });
 
 export const { addBook, deleteBook, toggleFavorite } = booksSlice.actions;
-
+export type { TypeBook };
 export default booksSlice.reducer;

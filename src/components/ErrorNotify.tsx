@@ -1,14 +1,16 @@
-import { IconButton, Snackbar, SnackbarContent } from "@mui/material";
+import { IconButton, Snackbar, SnackbarCloseReason, SnackbarContent } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetError } from "../redux/slices/errorSlice";
 import { Close } from "@mui/icons-material";
+import { AppDispatch, RootState } from "../redux/store";
 
 function ErrorNotify() {
-  const text = useSelector((state) => state.error);
-  const dispatch = useDispatch();
+  const text = useSelector((state: RootState) => state.error);
+  const dispatch: AppDispatch = useDispatch();
+  const parseBoolean = (value: string): boolean => value.trim() !== "";
 
-  function handleClose(e, reason) {
+  function handleClose(_: unknown, reason: SnackbarCloseReason) {
     if (reason === "clickaway") return;
 
     dispatch(resetError());
@@ -22,12 +24,7 @@ function ErrorNotify() {
   );
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={text}
-        autoHideDuration={4000}
-        onClose={handleClose}
-      >
+      <Snackbar anchorOrigin={{ vertical: "top", horizontal: "right" }} open={parseBoolean(text)} autoHideDuration={4000} onClose={handleClose}>
         <SnackbarContent
           action={action}
           message={text}
