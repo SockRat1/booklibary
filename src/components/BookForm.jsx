@@ -1,12 +1,13 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addBook, fetchBook } from "../redux/slices/booksSlice";
 import { v4 } from "uuid";
 import { setError } from "../redux/slices/errorSlice";
 function BookForm() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const loading = useSelector((state) => state.books.isLoading);
   const dispatch = useDispatch();
 
   function addHandler() {
@@ -21,9 +22,7 @@ function BookForm() {
       setTitle("");
       setAuthor("");
     } else {
-      dispatch(
-        setError("Enter the names of the authors and the title of the book")
-      );
+      dispatch(setError("Enter the names of the authors and the title of the book"));
     }
   }
   return (
@@ -43,23 +42,13 @@ function BookForm() {
         }}
       >
         <Typography variant="h3">Add a new book</Typography>
-        <TextField
-          variant="standard"
-          label="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          variant="standard"
-          label="Author"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        />
+        <TextField variant="standard" label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <TextField variant="standard" label="Author" value={author} onChange={(e) => setAuthor(e.target.value)} />
         <Box display="flex" flexDirection="column" gap="1rem" width="100%">
           <Button variant="contained" fullWidth onClick={addHandler}>
             Add Book
           </Button>
-          <Button variant="contained" onClick={() => dispatch(fetchBook())}>
+          <Button variant="contained" onClick={() => dispatch(fetchBook())} loading={loading}>
             Add random via API
           </Button>
         </Box>

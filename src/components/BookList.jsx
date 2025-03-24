@@ -1,23 +1,10 @@
-import {
-  Bookmark,
-  BookmarkBorder,
-  Delete,
-  Favorite,
-} from "@mui/icons-material";
-import {
-  Box,
-  Checkbox,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { Bookmark, BookmarkBorder, Delete, Favorite } from "@mui/icons-material";
+import { Box, Checkbox, IconButton, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBook, toggleFavorite } from "../redux/slices/booksSlice";
 
 function BookList() {
-  const books = useSelector((state) => state.books);
+  const books = useSelector((state) => state.books.books);
   const dispatch = useDispatch();
   const searchbyauthor = useSelector((state) => state.filter.searchbyauthor);
   const searchbytitle = useSelector((state) => state.filter.searchbytitle);
@@ -25,15 +12,11 @@ function BookList() {
   let searchedbooks = [...books];
 
   if (searchbyauthor) {
-    searchedbooks = searchedbooks.filter((book) =>
-      book.author.toLowerCase().includes(searchbyauthor.toLowerCase())
-    );
+    searchedbooks = searchedbooks.filter((book) => book.author.toLowerCase().includes(searchbyauthor.toLowerCase()));
   }
 
   if (searchbytitle) {
-    searchedbooks = searchedbooks.filter((book) =>
-      book.title.toLowerCase().includes(searchbytitle.toLowerCase())
-    );
+    searchedbooks = searchedbooks.filter((book) => book.title.toLowerCase().includes(searchbytitle.toLowerCase()));
   }
   if (onlyfavorite) {
     searchedbooks = searchedbooks.filter((book) => book.isFavorite);
@@ -80,16 +63,8 @@ function BookList() {
                 }}
               >
                 <ListItemText primary={val.title} secondary={val.author} />
-                <Checkbox
-                  icon={<BookmarkBorder />}
-                  checkedIcon={<Bookmark />}
-                  checked={val.isFavorite}
-                  onChange={(e) => handleFavorite(e, val.id)}
-                />
-                <IconButton
-                  sx={{ ml: "auto" }}
-                  onClick={() => handlerDelete(val.id)}
-                >
+                <Checkbox icon={<BookmarkBorder />} checkedIcon={<Bookmark />} checked={val.isFavorite} onChange={(e) => handleFavorite(e, val.id)} />
+                <IconButton sx={{ ml: "auto" }} onClick={() => handlerDelete(val.id)}>
                   <Delete />
                 </IconButton>
               </ListItem>
