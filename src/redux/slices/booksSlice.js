@@ -54,10 +54,10 @@ const booksSlice = createSlice({
       );
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchBook.fulfilled, (state, action) => {
+  extraReducers: {
+    [fetchBook.fulfilled]: (state, action) => {
       state.push(action.payload);
-    });
+    },
   },
 });
 

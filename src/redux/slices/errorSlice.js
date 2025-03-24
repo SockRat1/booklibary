@@ -14,10 +14,10 @@ const errorSlice = createSlice({
       return "";
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchBook.rejected, (_, action) => {
+  extraReducers: {
+    [fetchBook.rejected]: (_, action) => {
       return action.payload;
-    });
+    },
   },
 });
 

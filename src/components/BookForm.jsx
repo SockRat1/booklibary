@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addBook, fetchBook } from "../redux/slices/booksSlice";
 import { v4 } from "uuid";
+import { setError } from "../redux/slices/errorSlice";
 function BookForm() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -19,6 +20,10 @@ function BookForm() {
       dispatch(addBook(book));
       setTitle("");
       setAuthor("");
+    } else {
+      dispatch(
+        setError("Enter the names of the authors and the title of the book")
+      );
     }
   }
   return (
