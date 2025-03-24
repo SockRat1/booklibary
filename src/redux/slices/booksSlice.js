@@ -10,7 +10,7 @@ export const fetchBook = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const query = getRandomLetter();
-      const url = `https://www.gooogleapis.com/books/v1/volumes?q=${query}&key=AIzaSyDJjChH0fxkFnoJIn67qw1dypLzB-fPTbA`;
+      const url = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=AIzaSyDJjChH0fxkFnoJIn67qw1dypLzB-fPTbA`;
       const res = await axios.get(url);
 
       if (res.status !== 200) {
